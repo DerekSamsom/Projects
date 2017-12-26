@@ -19,6 +19,6 @@ titanic_clean <- titanic_original %>%
 )
 # 4: Cabin
 
-
+#
 # 5: Submit the project on Github
 
