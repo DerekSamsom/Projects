@@ -48,10 +48,10 @@ wssplot(wine_2)
 # in the curve.
 
 #   * Why does this method work? What's the intuition behind it?
-# A better model will reduce the within-group sum of squares, and a significant
-# drop when adding a cluster shows that the additional cluster is better 
-# describing the data. When the curve bends, adding additional clusters is no
-# longer helping the model because it is no longer
+# A large drop of the within-group sum of squares when increasing the number
+# of clusters shows that the additional cluster is better 
+# describing the data. When the curve bends, adding additional clusters are no
+# longer causing much decrease in the within-group sum of squares.
 
 
 #   * Look at the code for wssplot() and figure out how it works
@@ -67,7 +67,7 @@ barplot(table(nc$Best.n[1,]),
 
 
 # Exercise 3: How many clusters does this method suggest?
-# This method also suggests 3 clusters.
+# This method also suggests 3 clusters based on majority rule.
 
 # Exercise 4: Once you've picked the number of clusters, run k-means 
 # using this number of clusters. Output the result of calling kmeans()
@@ -83,9 +83,6 @@ fit_km$centers
 # compares to the actual wine types in wine$Type. Would you consider this a good
 # clustering?
 
-                         
-                        
-
 ct_km <- table(wine$Type, fit_km$cluster)
 ct_km
 
@@ -96,6 +93,7 @@ ct_km
 # * Visualize these clusters using  function clusplot() from the cluster library
 # * Would you consider this a good clustering?
 
-clusplot(wine_2, clus = fit_km$cluster, color = TRUE)
+clusplot(wine_2, clus = fit_km$cluster)
 
-# I consider this a good clustering
+# I consider this a good clustering. Visuallt the point in the clusplot match
+# up well with the ellipses representing the clusters.
