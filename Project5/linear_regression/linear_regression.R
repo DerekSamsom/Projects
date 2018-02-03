@@ -175,7 +175,6 @@ plot(energy_mod_4, which = c(1, 2))
 
 
 anova(energy_mod_2, energy_mod_3, energy_mod_4)
-anova(energy_mod_4, energy_mod_3, energy_mod_2)
 
 ## Interactions and factors
 ## ══════════════════════════
@@ -251,12 +250,19 @@ summary(energy_toxic_by_green)
 
 # Toxic and green do not act independently on energy, there is some interaction.
 # p-value of interaction is .0193
+# Model with interaction has lower p-value than best model without interaction.
+# Toxic alone is no longer significant, its significance is in its interaction
+# with green
 
 ##   2. Try adding region to the model. Are there significant differences
 ##      across the four regions?
 
 energy_region <- lm(formula = energy ~ toxic + green + toxic:green + region,
    data = na.omit(states_data))  
+
+# There are differences between the regions, the corefficient estimate for the 
+# South region is 36.5, while the East region has a coefficient estimate of
+# -29.6, however, this difference is not significant.
 
 summary(energy_region)
 anova(energy_region)
