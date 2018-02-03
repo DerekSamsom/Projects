@@ -95,5 +95,5 @@ ct_km
 
 clusplot(wine_2, clus = fit_km$cluster)
 
-# I consider this a good clustering. Visuallt the point in the clusplot match
+# I consider this a good clustering. Visually the points in the clusplot match
 # up well with the ellipses representing the clusters.
