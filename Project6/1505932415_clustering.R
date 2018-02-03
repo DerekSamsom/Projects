@@ -18,8 +18,9 @@ head(wine)
 # Exercise 1: Remove the first column from the data and scale
 # it using the scale() function
 
-wine[,1] <- NULL
-wine_data <- scale(wine)
+wine_2 <- wine
+wine_2[,1] <- NULL
+wine_2 <- scale(wine_2)
 
 # Now we'd like to cluster the data using K-Means. 
 # How do we decide how many clusters to use if you don't know that already?
@@ -39,7 +40,7 @@ wssplot <- function(data, nc = 15, seed = 1234){
 	                        ylab = "Within groups sum of squares")
 	   }
 
-wssplot(wine_data)
+wssplot(wine_2)
 
 # Exercise 2:
 #   * How many clusters does this method suggest?
@@ -47,7 +48,10 @@ wssplot(wine_data)
 # in the curve.
 
 #   * Why does this method work? What's the intuition behind it?
-
+# A better model will reduce the within-group sum of squares, and a significant
+# drop when adding a cluster shows that the additional cluster is better 
+# describing the data. When the curve bends, adding additional clusters is no
+# longer helping the model because it is no longer
 
 
 #   * Look at the code for wssplot() and figure out how it works
@@ -56,30 +60,42 @@ wssplot(wine_data)
 # and gives a distribution of potential number of clusters.
 
 set.seed(1234)
-nc <- NbClust(wine_data, min.nc = 2, max.nc = 15, method = "kmeans")
+nc <- NbClust(wine_2, min.nc = 2, max.nc = 15, method = "kmeans")
 barplot(table(nc$Best.n[1,]),
 	          xlab = "Numer of Clusters", ylab = "Number of Criteria",
 		            main = "Number of Clusters Chosen by 26 Criteria")
 
 
 # Exercise 3: How many clusters does this method suggest?
-
+# This method also suggests 3 clusters.
 
 # Exercise 4: Once you've picked the number of clusters, run k-means 
 # using this number of clusters. Output the result of calling kmeans()
 # into a variable fit.km
 
-# fit.km <- kmeans( ... )
+fit_km <- kmeans(wine_2, centers = 3, nstart = 25)
 
 # Now we want to evaluate how well this clustering does.
+fit_km$size
+fit_km$centers
 
 # Exercise 5: using the table() function, show how the clusters in fit.km$clusters
 # compares to the actual wine types in wine$Type. Would you consider this a good
 # clustering?
 
+                         
+                        
+
+ct_km <- table(wine$Type, fit_km$cluster)
+ct_km
+
+# 172/178 are correctly classified, or 96.6%. I would consider this a good
+# clustering.
 
 # Exercise 6:
 # * Visualize these clusters using  function clusplot() from the cluster library
 # * Would you consider this a good clustering?
 
-#clusplot( ... )
+clusplot(wine_2, clus = fit_km$cluster, color = TRUE)
+
+# I consider this a good clustering
