@@ -27,7 +27,7 @@ list.files("dataSets") # files in the dataSets folder
 ## ────────────────────────
 
 # read the states data
-states_data <- readRDS("dataSets/states.rds") 
+states_data <- readRDS("Project5/linear_regression/dataSets/states.rds") 
 #get labels
 states_info <- data.frame(attributes(states_data)[c("names", "var.labels")])
 #look at last few labels
@@ -161,20 +161,20 @@ summary(energy_mod_2)
 
 energy_mod_3 <- lm(energy ~ area + toxic + green, data = na.omit(states_data))
 summary(energy_mod_3)
-# p-value dropped even further for the model and each variable.
-# Adj. R^2 increased from 0.7507 to 0.7652
-# area has lowest p-value, will be dropped in the next model.
+# area has highest p-value, will be dropped in the next model.
 
 energy_mod_4 <- lm(energy ~ toxic + green, data = na.omit(states_data))
 summary(energy_mod_4)
-# p-value dropped even lower for the model and each of the remaining variables.
+
 
 par(mar = c(4, 4, 2, 2), mfrow = c(1, 2))
 plot(energy_mod_4, which = c(1, 2))
 # Q-Q plot exhibits some right skew
 
-
-anova(energy_mod_2, energy_mod_3, energy_mod_4)
+# Compare models with anova table
+anova(energy_mod_4, energy_mod_3, energy_mod_2)
+#Not a signifcant difference between models, therefore enrgy_mod_4, the 
+# simplest model, is the best so far.
 
 ## Interactions and factors
 ## ══════════════════════════
@@ -260,12 +260,17 @@ summary(energy_toxic_by_green)
 energy_region <- lm(formula = energy ~ toxic + green + toxic:green + region,
    data = na.omit(states_data))  
 
-# There are differences between the regions, the corefficient estimate for the 
-# South region is 36.5, while the East region has a coefficient estimate of
-# -29.6, however, this difference is not significant.
 
 summary(energy_region)
 anova(energy_region)
+# There are differences between the regions. The corefficient estimate for the 
+# South region is 36.5, while the East region has a coefficient estimate of
+# -29.6. 
+
+#Compare model with region to best model without.
+anova(energy_region, energy_toxic_by_green)
+# The P value of the difference betwwen the model with and without region is 
+# 0.06, showing that the regional differences are not significant.
 coef(summary(lm(energy ~ C(region, base = 4), data = states_data)))
 
 
