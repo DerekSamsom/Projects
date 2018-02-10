@@ -241,7 +241,6 @@ coef(summary(lm(csat ~ C(region, contr.helmert),
 
 ##   1. Add on to the regression equation that you created in exercise 1 by
 ##      generating an interaction term and testing the interaction.
-# Toxic and green do not act independently on energy, there is some interaction.
 energy_toxic_by_green <- lm(
     energy ~ toxic + green + toxic:green,
     data = states_data)
@@ -252,7 +251,7 @@ summary(energy_toxic_by_green)
 # p-value of interaction is .0193
 # Model with interaction has lower p-value than best model without interaction.
 # Toxic alone is no longer significant, its significance is in its interaction
-# with green
+# with green.
 
 ##   2. Try adding region to the model. Are there significant differences
 ##      across the four regions?
@@ -263,13 +262,13 @@ energy_region <- lm(formula = energy ~ toxic + green + toxic:green + region,
 
 summary(energy_region)
 anova(energy_region)
-# There are differences between the regions. The corefficient estimate for the 
+# There are differences between the regions. The coefficient estimate for the 
 # South region is 36.5, while the East region has a coefficient estimate of
 # -29.6. 
 
 #Compare model with region to best model without.
 anova(energy_region, energy_toxic_by_green)
-# The P value of the difference betwwen the model with and without region is 
+# The p-value of the difference between the model with and without region is 
 # 0.06, showing that the regional differences are not significant.
 coef(summary(lm(energy ~ C(region, base = 4), data = states_data)))
 
